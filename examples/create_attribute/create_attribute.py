@@ -6,10 +6,10 @@
 
 create_attribute.py:
 
-Demonstrates how to create attributes from MAVLink messages within your DroneKit-Python script 
+Demonstrates how to create attributes from MAVLink messages within your DroneKit-Python script
 and use them in the same way as the built-in Vehicle attributes.
 
-The code adds a new attribute to the Vehicle class, populating it with information from RAW_IMU messages 
+The code adds a new attribute to the Vehicle class, populating it with information from RAW_IMU messages
 intercepted using the message_listener decorator.
 
 Full documentation is provided at http://python.dronekit.io/examples/create_attribute.html
@@ -23,10 +23,9 @@ import time
 
 
 #Set up option parsing to get connection string
-import argparse  
+import argparse
 parser = argparse.ArgumentParser(description='Demonstrates how to create attributes from MAVLink messages. ')
-parser.add_argument('--connect', 
-                   help="Vehicle connection target string. If not specified, SITL automatically started and used.")
+parser.add_argument('--connect', help="Vehicle connection target string. If not specified, SITL automatically started and used.")
 args = parser.parse_args()
 
 connection_string = args.connect
