@@ -53,7 +53,6 @@ from dronekit.util import errprinter
 from pymavlink import mavutil, mavwp
 from pymavlink.dialects.v10 import ardupilotmega
 
-
 class APIException(Exception):
     """
     Base class for DroneKit related exceptions.
@@ -61,10 +60,8 @@ class APIException(Exception):
     :param String message: Message string describing the exception
     """
 
-
 class TimeoutError(APIException):
     '''Raised by operations that have timeouts.'''
-
 
 class Attitude(object):
     """
@@ -94,7 +91,6 @@ class Attitude(object):
     def __str__(self):
         fmt = '{}:pitch={pitch},yaw={yaw},roll={roll}'
         return fmt.format(self.__class__.__name__, **vars(self))
-
 
 class LocationGlobal(object):
     """
@@ -131,7 +127,6 @@ class LocationGlobal(object):
     def __str__(self):
         return "LocationGlobal:lat=%s,lon=%s,alt=%s" % (self.lat, self.lon, self.alt)
 
-
 class LocationGlobalRelative(object):
     """
     A global location object, with attitude relative to home location altitude.
@@ -167,7 +162,6 @@ class LocationGlobalRelative(object):
     def __str__(self):
         return "LocationGlobalRelative:lat=%s,lon=%s,alt=%s" % (self.lat, self.lon, self.alt)
 
-
 class LocationLocal(object):
     """
     A local location object.
@@ -197,10 +191,9 @@ class LocationLocal(object):
 
         if self.north is not None and self.east is not None:
             if self.down is not None:
-                return math.sqrt(self.north**2 + self.east**2 + self.down**2) 
+                return math.sqrt(self.north**2 + self.east**2 + self.down**2)
             else:
                 return math.sqrt(self.north**2 + self.east**2)
-
 
 class GPSInfo(object):
     """
@@ -224,7 +217,6 @@ class GPSInfo(object):
 
     def __str__(self):
         return "GPSInfo:fix=%s,num_sat=%s" % (self.fix_type, self.satellites_visible)
-
 
 class Battery(object):
     """
@@ -251,7 +243,6 @@ class Battery(object):
     def __str__(self):
         return "Battery:voltage={},current={},level={}".format(self.voltage, self.current,
                                                                self.level)
-
 
 class Rangefinder(object):
     """
@@ -452,7 +443,6 @@ class Capabilities:
         self.flight_termination             = (((capabilities >> 11) & 1) == 1)
         self.compass_calibration            = (((capabilities >> 12) & 1) == 1)
 
-
 class VehicleMode(object):
     """
     This object is used to get and set the current "flight mode".
@@ -511,7 +501,6 @@ class VehicleMode(object):
     def __ne__(self, other):
         return self.name != other
 
-
 class SystemStatus(object):
     """
     This object is used to get and set the current "system status".
@@ -534,7 +523,6 @@ class SystemStatus(object):
 
     def __ne__(self, other):
         return self.state != other
-
 
 class HasObservers(object):
     def __init__(self):
@@ -708,7 +696,6 @@ class HasObservers(object):
 
         return decorator
 
-
 class ChannelsOverride(dict):
     """
     A dictionary class for managing Vehicle channel overrides.
@@ -754,7 +741,6 @@ class ChannelsOverride(dict):
             for k, v in self.iteritems():
                 overrides[int(k) - 1] = v
             self._vehicle._master.mav.rc_channels_override_send(0, 0, *overrides)
-
 
 class Channels(dict):
     """
@@ -856,7 +842,6 @@ class Channels(dict):
                     pass
         self._overrides._active = True
         self._overrides._send()
-
 
 class Locations(HasObservers):
     """
@@ -975,7 +960,6 @@ class Locations(HasObservers):
         """
         return LocationGlobalRelative(self._lat, self._lon, self._relative_alt)
 
-
 class Vehicle(HasObservers):
     """
     The main vehicle API.
@@ -1064,6 +1048,7 @@ class Vehicle(HasObservers):
             self._yawspeed = m.yawspeed
             self._rollspeed = m.rollspeed
             self.notify_attribute_listeners('attitude', self.attitude)
+            print ("att arrives")
 
         self._heading = None
         self._airspeed = None
@@ -2359,7 +2344,6 @@ class Vehicle(HasObservers):
 
         return True
 
-
 class Gimbal(object):
     """
     Gimbal status and control.
@@ -2533,7 +2517,6 @@ class Gimbal(object):
 
     def __str__(self):
         return "Gimbal: pitch={0}, roll={1}, yaw={2}".format(self.pitch, self.roll, self.yaw)
-
 
 class Parameters(collections.MutableMapping, HasObservers):
     """
@@ -2720,7 +2703,6 @@ class Parameters(collections.MutableMapping, HasObservers):
         attr_name = attr_name.upper()
         return super(Parameters, self).on_attribute(attr_name, *args, **kwargs)
 
-
 class Command(mavutil.mavlink.MAVLink_mission_item_message):
     """
     A waypoint object.
@@ -2760,7 +2742,6 @@ class Command(mavutil.mavlink.MAVLink_mission_item_message):
 
     """
     pass
-
 
 class CommandSequence(object):
     """
@@ -2921,9 +2902,7 @@ class CommandSequence(object):
         self._vehicle._wploader.set(value, index + 1)
         self._vehicle._wpts_dirty = True
 
-
 from dronekit.mavlink import MAVConnection
-
 
 def connect(ip,
             _initialize=True,
@@ -2935,6 +2914,7 @@ def connect(ip,
             heartbeat_timeout=30,
             source_system=255,
             use_native=False):
+    # <editor-fold> Intro
     """
     Returns a :py:class:`Vehicle` object connected to the address specified by string parameter ``ip``.
     Connection string parameters (``ip``) for different targets are listed in the :ref:`getting started guide <get_started_connecting>`.
@@ -2985,6 +2965,7 @@ def connect(ip,
 
     :returns: A connected vehicle of the type defined in ``vehicle_class`` (a superclass of :py:class:`Vehicle`).
     """
+    # </editor-fold>
 
     if not vehicle_class:
         vehicle_class = Vehicle
