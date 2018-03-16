@@ -530,8 +530,6 @@ class HasObservers(object):
         self._attribute_listeners = {}
         self._attribute_cache = {}
 
-
-
     def add_attribute_listener(self, attr_name, observer):
         """
         Add an attribute listener callback.
@@ -637,8 +635,7 @@ class HasObservers(object):
             try:
                 fn(self, attr_name, value)
             except Exception as e:
-                errprinter('>>> Exception in attribute handler for %s' %
-                           attr_name)
+                errprinter('>>> Exception in attribute handler for %s' %  attr_name)
                 errprinter('>>> ' + str(e))
 
         for fn in self._attribute_listeners.get('*', []):
@@ -1013,7 +1010,7 @@ class Vehicle(HasObservers):
 
         @self.on_attribute('*')
         def listener(_, name, value):
-            self._ready_attrs.add(name)
+            self._ready_attrs.add(name) # this looks like registering all the attiributes: EL
 
         # Attaches message listeners.
         self._message_listeners = dict()
@@ -1048,7 +1045,7 @@ class Vehicle(HasObservers):
             self._yawspeed = m.yawspeed
             self._rollspeed = m.rollspeed
             self.notify_attribute_listeners('attitude', self.attitude)
-            print ("att arrives")
+            #print ("att arrives")
 
         self._heading = None
         self._airspeed = None
@@ -1506,7 +1503,6 @@ class Vehicle(HasObservers):
                 errprinter('>>> Exception in message handler for %s' %
                            msg.get_type())
                 errprinter('>>> ' + str(e))
-
 
     def close(self):
         return self._handler.close()
@@ -2973,6 +2969,7 @@ def connect(ip,
     handler = MAVConnection(ip, baud=baud, source_system=source_system, use_native=use_native)
     vehicle = vehicle_class(handler)
 
+    print ('im here in connect ')
     if status_printer:
 
         @vehicle.on_message('STATUSTEXT')

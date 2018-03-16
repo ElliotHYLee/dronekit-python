@@ -125,20 +125,12 @@ class MAVConnection(object):
         if ip.startswith("udpin:"):
             self.master = mavudpin_multi(ip[6:], input=True, baud=baud, source_system=source_system)
         else:
-            self.master = mavutil.mavlink_connecobject for fix_targets.
-        sendfn = self.master.mav.send
-
-        def newsendfn(mavmsg, *args, **kwargs):
-            self.fix_targets(mavmsg)
-            return sendfn(mavmsg, *ation(ip, baud=baud, source_system=source_system)
+            self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system)
 
         # TODO get rid of "master" object as exposed,
         # keep it private, expose something smaller for dronekit
         self.out_queue = Queue()
-        self.master.mav = mavutil.mavlink.MAVLink(
-            MAVWriter(self.out_queue),
-            srcSystem=self.master.source_system,
-            use_native=use_native)
+        self.master.mav = mavutil.mavlink.MAVLink(MAVWriter(self.out_queue), srcSystem=self.master.source_system, use_native=use_native)
 
         # Monkey-patch MAVLink object for fix_targets.
         sendfn = self.master.mav.send
@@ -308,6 +300,7 @@ class MAVConnection(object):
         self.master.close()
 
     def pipe(self, target):
+        print ("im here================ in pipe")
         target.target_system = self.target_system
 
         # vehicle -> self -> target
